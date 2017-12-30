@@ -11,7 +11,13 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
+Route::get('/', array('uses' => 'RestaurantController@getIndex'));
+
+Route::controller('users', 'UserController');
+
+
+Route::group(array("prefix" => "admin", "before"=>"auth"), function () {
+
+
 });
+

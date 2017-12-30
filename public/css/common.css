@@ -1,0 +1,7 @@
+.default-color {
+	color: #28a745;
+}
+
+#sidebar .list-group .list-group-item >a{
+  color:black;
+}
