@@ -65,8 +65,8 @@
 		        	<p class="float-right d-md-none">
 		        		<button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Menu</button>
 		            </p>
-			        <div class="jumbotron">
-			        	<h1>@yield('page-title')</h1>
+			        <div class="jumbotron" style="padding: 20px 10px;">
+			        	<h2>@yield('page-title')</h2>
 			            <div>
 			            	@yield('content')
 			            </div>

@@ -16,8 +16,9 @@ Route::get('/', array('uses' => 'RestaurantController@getIndex'));
 Route::controller('users', 'UserController');
 
 
-Route::group(array("prefix" => "admin", "before"=>"auth"), function () {
+Route::group(array("before"=>"auth"), function () {
 
+	Route::resource('financies', 'FinancialReportController');
 
 });
 
