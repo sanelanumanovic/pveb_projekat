@@ -33,6 +33,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         'supervisor_id' => 'integer'
 	);
 
+
+	public function procurements() {
+        return $this->hasMany('Procurement');
+    }
+
+
 	/**
 	 * Get the unique identifier for the user.
 	 *
