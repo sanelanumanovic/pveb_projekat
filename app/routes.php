@@ -20,5 +20,7 @@ Route::group(array("before"=>"auth"), function () {
 
 	Route::resource('financies', 'FinancialReportController');
 
+    Route::post('report_request','FinancialReportController@generateReport');
+
 });
 

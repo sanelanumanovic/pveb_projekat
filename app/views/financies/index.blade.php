@@ -9,7 +9,9 @@
     			Tip izveštaja
     		</div>
 
+    		
     		<div class="col-12 col-md-9">
+    		{{ Form:: open(array('action' => 'FinancialReportController@generateReport')) }} 
     			{{ Form::radio('reportType', '1', true) }}
     			{{Form::label('prihod')}}
     			<br>
@@ -36,6 +38,8 @@
 			<div class="col-6 col-md-3">
 				<button class="btn btn-success btn-block" type="submit">Kreiraj izveštaj</button>
 			</div>
+
+			{{ Form:: close() }} 
 	</div>
 
 @stop
