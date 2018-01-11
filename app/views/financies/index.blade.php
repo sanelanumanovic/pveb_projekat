@@ -27,9 +27,16 @@
     		</div>
 
 			<div class="col-12 col-md-9">
-				{{ Form::input('date', 'fromDate') }}
+				{{ Form::input('date', 'fromDate', date('Y-m-d', strtotime('-1 day'))) }}
 				{{Form::label('-')}}
-				{{ Form::input('date', 'toDate') }}
+				{{ Form::input('date', 'toDate', date('Y-m-d', strtotime('+0 day'))) }}
+			</div>
+
+			<div class="col-6 col-md-9 float-right text-danger">
+				{{$message or ''}}
+			</div>
+
+			<div class="col-6 col-md-3">
 			</div>
 
 			<div class="col-6 col-md-9">

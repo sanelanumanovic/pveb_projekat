@@ -21,9 +21,15 @@ class FinancialReportController extends BaseController {
         $validator = Validator::make ($data, $rules);
 		
         if ($validator -> passes()) {
+        	
         	$reportType = Input::get('reportType');
        		$toDate = Input::get('toDate');
     		$fromDate = Input::get('fromDate');
+
+    		if ($fromDate > $toDate) {
+        		return View::make("financies.index")->with('data', $data)
+					->with('message', 'Neispravni podaci!');
+        	}
 
         	$inputData = array(
 				'reportType' => $reportType,
@@ -35,14 +41,17 @@ class FinancialReportController extends BaseController {
         		case '1':
         			$modelData = $this->revenues($fromDate, $toDate);
         			$title = 'Prihodi u periodu ';
+        			$emptyResult = 'Ne postoje prihodi za traženi period.';
         			break;
         		case '2':
         			$modelData = $this->expenditures($fromDate, $toDate);
         			$title = 'Rashodi u periodu ';
+        			$emptyResult = 'Ne postoje rashodi za traženi period.';
         			break;
         		case '3':
         			$modelData = $this->all($fromDate, $toDate);
         			$title = 'Prihodi i rashodi u periodu ';
+        			$emptyResult = 'Ne postoje prihodi i rashodi za traženi period.';
         			break;
         		default:
         			return View::make("financies.index")->with('data', $inputData)
@@ -53,9 +62,11 @@ class FinancialReportController extends BaseController {
         										 ->with('toDate', $toDate)
         										 ->with('reportType', $reportType)
         										 ->with('fromDate', $fromDate)
-        										 ->with('title', $title);
+        										 ->with('title', $title)
+        										 ->with('emptyResult', $emptyResult);
         } else {
-        	return View::make("financies.index")->with('data', $data);
+        	return View::make("financies.index")->with('data', $data)
+					->with('message', 'Neispravni podaci!');
         }
 
 	}
@@ -81,7 +92,7 @@ class FinancialReportController extends BaseController {
     		foreach ($modelData as $md) {
 				$excel->getActiveSheet()->setCellValue('A'.$i, $md->info);
 				$excel->getActiveSheet()->setCellValue('B'.$i, $md->id);
-				$excel->getActiveSheet()->setCellValue('C'.$i, $md->date);
+				$excel->getActiveSheet()->setCellValue('C'.$i, date('d.m.Y', strtotime($md->date)));
 				$excel->getActiveSheet()->setCellValue('D'.$i, $md->total);
 
 				$i = $i + 1;

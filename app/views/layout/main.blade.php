@@ -24,7 +24,7 @@
 	        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
 	        	<ul class="navbar-nav mr-auto">
 	          		<li class="nav-item active">
-	          			<a class="nav-link" href="#">Početna <span class="sr-only">(current)</span></a>
+	          			<a class="nav-link" href="<?php echo Request::root(); ?>">Početna <span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item active">
 	          			<a class="nav-link" href="#">Jelovnik</a>
@@ -56,7 +56,7 @@
 			            <a href="#" class="list-group-item text-dark">Namirnice</a>
 			            <a href="#" class="list-group-item text-dark">Jelovnik</a>
 			            <a href="#" class="list-group-item text-dark">Inventar</a>
-			            <a href="#" class="list-group-item active">Finansije</a>
+			            <a href="<?php echo Request::root(); ?>/financies/" class="list-group-item active">Finansije</a>
 			            <a href="#" class="list-group-item text-dark">Ljudski resursi</a>
 		            </div>
 		        </div>
@@ -66,7 +66,7 @@
 		        		<button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Menu</button>
 		            </p>
 			        <div class="jumbotron" style="padding: 20px 10px;">
-			        	<h2>@yield('page-title')</h2>
+			        	<h3>@yield('page-title')</h3>
 			            <div>
 			            	@yield('content')
 			            </div>

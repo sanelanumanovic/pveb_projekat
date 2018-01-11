@@ -5,3 +5,11 @@
 #sidebar .list-group .list-group-item >a{
   color:black;
 }
+
+.jumbotron {
+	min-height: 344px;
+}
+
+.float-right {
+	float: right;
+}
