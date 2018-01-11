@@ -75,8 +75,18 @@ class FinancialReportController extends BaseController {
     			return View::make("financies.index")->with('data', $inputData)
     												->with('message', 'Neispravan unos!');
     	}
+    	
+    	Excel::load('finansijski_izvestaj.xlsx', function($excel) use ($modelData){
+    		$i = 2;
+    		foreach ($modelData as $md) {
+				$excel->getActiveSheet()->setCellValue('A'.$i, $md->info);
+				$excel->getActiveSheet()->setCellValue('B'.$i, $md->id);
+				$excel->getActiveSheet()->setCellValue('C'.$i, $md->date);
+				$excel->getActiveSheet()->setCellValue('D'.$i, $md->total);
 
-    	return View::make("financies.index");
+				$i = $i + 1;
+    		}
+    	})->setFileName('finansijski_izvestaj__'.$fromDate.'__'.$toDate)->download('xlsx');
 
 	}
 
