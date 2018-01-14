@@ -16,7 +16,7 @@ class UserController extends BaseController {
 			return Redirect::to('/');
 		}
 		
-		return Redirect::to('users/signin')->with('message', 'Username ili password je neispravan!');
+		return Redirect::to('users/signin')->with('message', 'Korisničko ime i/ili šifra su neispravni!');
 	}
 
 

@@ -2,7 +2,6 @@
 <html lang="en">
 	<head>
 		<title>Najmanji problem</title>
-
 		   
 		{{HTML::style('bootstrap/css/signin.css')}}
 		{{HTML::style('css/common.css')}}
@@ -25,11 +24,16 @@
 	        	</div>
 
 	        	<div class="form-group has-feedback has-feedback-left">
-		        	<!-- </i> -->
 		        	{{Form::password('password', array('class' => 'form-control', 'placeholder' => 'šifra'))}}
-	        		
 	        	</div>
 		        <button class="btn btn-lg btn-success btn-block" type="submit">Prijavi se</button>
+
+		        <div class="text-danger">
+		        	@if(Session::has('message'))
+						{{Session::get('message')}}
+					@endif
+		        </div>
+
 	      	{{Form::close()}}
 
     	</div>

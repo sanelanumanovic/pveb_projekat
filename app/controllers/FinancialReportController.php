@@ -92,7 +92,7 @@ class FinancialReportController extends BaseController {
     		foreach ($modelData as $md) {
 				$excel->getActiveSheet()->setCellValue('A'.$i, $md->info);
 				$excel->getActiveSheet()->setCellValue('B'.$i, $md->id);
-				$excel->getActiveSheet()->setCellValue('C'.$i, date('d.m.Y', strtotime($md->date)));
+				$excel->getActiveSheet()->setCellValue('C'.$i, date('d.m.Y.', strtotime($md->date)));
 				$excel->getActiveSheet()->setCellValue('D'.$i, $md->total);
 
 				$i = $i + 1;
