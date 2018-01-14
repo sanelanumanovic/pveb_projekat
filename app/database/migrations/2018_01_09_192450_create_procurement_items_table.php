@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProcurementInventoryItemsTable extends Migration {
+class CreateProcurementItemsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,12 +11,12 @@ class CreateProcurementInventoryItemsTable extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('procurement_inventory_items', function(Blueprint $table) {
+		Schema::create('procurement_items', function(Blueprint $table) {
 			$table->unsignedInteger('procurement_id');
 			$table->foreign('procurement_id')->references('id')->on('procurements')->onDelete('cascade');
 
-			$table->unsignedInteger('inventory_id');
-			$table->foreign('inventory_id')->references('id')->on('inventories')->onDelete('cascade');
+			$table->unsignedInteger('ingredient_id');
+			$table->foreign('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade');
 
 			$table->unsignedInteger('measurement_unit_id');
 			$table->foreign('measurement_unit_id')->references('id')->on('measurement_units')->onDelete('cascade');
@@ -24,7 +24,7 @@ class CreateProcurementInventoryItemsTable extends Migration {
 			$table->decimal('price', 10, 2);
 			$table->integer('quantity');
 
-			$table->primary(['procurement_id', 'inventory_id']);
+			$table->primary(['procurement_id', 'ingredient_id']);
 		});
 	}
 
@@ -34,7 +34,8 @@ class CreateProcurementInventoryItemsTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::dropIfExists('procurement_inventory_items');
+		Schema::dropIfExists('procurement_items');
 	}
+
 
 }

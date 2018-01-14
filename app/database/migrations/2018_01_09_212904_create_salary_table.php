@@ -17,7 +17,7 @@ class CreateSalaryTable extends Migration {
 			$table->decimal('amount', 10, 2);
 			$table->longText('description');
 
-			$table->integer('user_id');
+			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
 		});
