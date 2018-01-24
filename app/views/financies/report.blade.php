@@ -13,9 +13,9 @@
 					<i class="fa fa-file-excel-o default-color"></i>
 				</a>
 			</span>
-			<span style="float: right; cursor: pointer;" title="Prikazi graph">
+			<span style="float: right; cursor: pointer; margin: 5px;" title="Prikazi graph">
 				<a  href="{{ action( 'FinancialReportController@plotGraph', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType, 'title' => $title) ) }}" >
-					<i class="fa fa-align-center"></i>
+					<i class="fa fa-align-center default-color"></i>
 				</a>
 			</span>
 			@endif
