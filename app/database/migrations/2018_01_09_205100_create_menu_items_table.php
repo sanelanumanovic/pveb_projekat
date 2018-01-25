@@ -12,15 +12,15 @@ class CreateMenuItemsTable extends Migration {
 	 */
 	public function up() {
 		Schema::create('menu_items', function(Blueprint $table) {
-			$table->integer('ingredient_id');
+			$table->unsignedInteger('ingredient_id');
 			$table->foreign('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade');
 
-			$table->integer('menu_id');
+			$table->unsignedInteger('menu_id');
 			$table->foreign('menu_id')->references('id')->on('menu')->onDelete('cascade');
 
 			$table->decimal('quantity', 9, 2);
 
-			$table->integer('measurement_unit_id');
+			$table->unsignedInteger('measurement_unit_id');
 			$table->foreign('measurement_unit_id')->references('id')->on('measurement_units');
 
 			$table->primary(['menu_id', 'ingredient_id']);
