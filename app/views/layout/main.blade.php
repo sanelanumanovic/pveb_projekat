@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="en">
 	<head>
-	<title>Najmanji problem</title>
+		<title>Najmanji problem</title>
 
-	   
-	{{HTML::style('bootstrap/css/offcanvas.css')}}
-	{{HTML::style('css/common.css')}}
-    {{HTML::style('bootstrap/css/bootstrap.min.css')}}
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+		   
+		{{HTML::style('bootstrap/css/offcanvas.css')}}
+		{{HTML::style('css/common.css')}}
+	    {{HTML::style('bootstrap/css/bootstrap.min.css')}}
+	    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	</head>
 
 	<body>

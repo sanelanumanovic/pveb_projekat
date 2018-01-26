@@ -6,7 +6,10 @@
 	
 	<div class="container">
 		<h4>
-			{{$title}} od {{date('d.m.Y.', strtotime($fromDate))}} do {{date('d.m.Y.', strtotime($toDate))}}
+			{{$title}} 
+			@if($fromDate != null)
+				 u periodu od {{date('d.m.Y.', strtotime($fromDate))}} do {{date('d.m.Y.', strtotime($toDate))}}
+			@endif
 			@if(count($modelData) > 0)
 			<span style="float: right; cursor: pointer;" title="Kreiraj Excel dokumet"> 
 				<a  href="{{ action( 'FinancialReportController@downloadExcelDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >

@@ -6,14 +6,17 @@
 	
 	<div class="container">
 		<h4>
-			{{$title}} od {{date('d.m.Y.', strtotime($fromDate))}} do {{date('d.m.Y.', strtotime($toDate))}}
+			{{$title}} 
+			@if($fromDate != null)
+				 u periodu od {{date('d.m.Y.', strtotime($fromDate))}} do {{date('d.m.Y.', strtotime($toDate))}}
+			@endif
 			@if(count($modelData) > 0)
 			<span style="float: right; cursor: pointer;" title="Kreiraj Excel dokumet"> 
 				<a  href="{{ action( 'FinancialReportController@downloadExcelDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >
 					<i class="fa fa-file-excel-o default-color"></i>
 				</a>
 			</span>
-			<span style="float: right; cursor: pointer; margin: 5px;" title="Prikazi graph">
+			<span style="float: right; cursor: pointer; margin: 0px 10px;" title="Prikazi graph">
 				<a  href="{{ action( 'FinancialReportController@plotGraph', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType, 'title' => $title) ) }}" >
 					<i class="fa fa-align-center default-color"></i>
 				</a>
