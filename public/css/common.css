@@ -1,4 +1,4 @@
-.default-color {
+.default-green {
 	color: #28a745;
 }
 
@@ -12,4 +12,12 @@
 
 .float-right {
 	float: right;
+}
+
+.default-blue {
+	color: steelblue;
+}
+
+.default-orange {
+	color: #f57d21;
 }

@@ -28,5 +28,7 @@ Route::group(array("before"=>"auth"), function () {
 
     Route::get("financies/plot_graph/{fromDate}/{toDate}/{reportType}/{title}", "FinancialReportController@plotGraph");
 
+     Route::get("financies/draw_pie_chart/{fromDate}/{toDate}/{reportType}/{title}", "FinancialReportController@drawPieChart");
+
 });
 

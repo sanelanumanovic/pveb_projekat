@@ -13,12 +13,18 @@
 			@if(count($modelData) > 0)
 			<span style="float: right; cursor: pointer;" title="Kreiraj Excel dokumet"> 
 				<a  href="{{ action( 'FinancialReportController@downloadExcelDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >
-					<i class="fa fa-file-excel-o default-color"></i>
+					<i class="fa fa-file-excel-o default-green"></i>
 				</a>
 			</span>
-			<span style="float: right; cursor: pointer; margin: 0px 10px;" title="Prikazi graph">
+			
+			<span style="float: right; cursor: pointer; margin: 0px 10px;" title="Prikaži pie chart">
+				<a  href="{{ action( 'FinancialReportController@drawPieChart', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType, 'title' => $title) ) }}" >
+					<i class="fa fa-pie-chart default-orange"></i>
+				</a>
+			</span>
+			<span style="float: right; cursor: pointer;" title="Prikaži graph">
 				<a  href="{{ action( 'FinancialReportController@plotGraph', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType, 'title' => $title) ) }}" >
-					<i class="fa fa-align-center default-color"></i>
+					<i class="fa fa-bar-chart default-blue"></i>
 				</a>
 			</span>
 			@endif

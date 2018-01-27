@@ -118,7 +118,7 @@ class FinancialReportController extends BaseController
 
     }
 
-    public function downloadExcelDocument($fromDate, $toDate, $reportType) {
+    public function downloadExcelDocument($fromDate, $toDate, $reportType, $title) {
         switch ($reportType) {
             case '1':
                 $modelData = $this->revenues($fromDate, $toDate);
@@ -130,7 +130,7 @@ class FinancialReportController extends BaseController
                 $modelData = $this->all($fromDate, $toDate);
                 break;
             default:
-                return View::make("financies.index")->with('data', $reportType)
+                return View::make("financies.reportpie")->with('data', $reportType)
                     ->with('message', 'Neispravan unos!');
         }
 
@@ -146,6 +146,31 @@ class FinancialReportController extends BaseController
             }
         })->setFileName('finansijski_izvestaj__' . $fromDate . '__' . $toDate)->download('xlsx');
 
+    }
+
+    public function drawPieChart($fromDate, $toDate, $reportType, $title)  {
+	    switch ($reportType) {
+            case '1':
+                $modelData = $this->revenues($fromDate, $toDate);
+                break;
+            case '2':
+                $modelData = $this->expenditures($fromDate, $toDate);
+                break;
+            case '3':
+                $modelData = $this->all($fromDate, $toDate);
+                break;
+            default:
+                return View::make("financies.index")->with('data', $reportType)
+                    ->with('message', 'Neispravan unos!');
+        }
+
+
+        return View::make("financies.reportpie")
+            ->with('modelData', $modelData)
+            ->with('toDate', $toDate)
+            ->with('reportType', $reportType)
+            ->with('fromDate', $fromDate)
+            ->with('title', $title);
     }
 
    	private function calculateFromDate($timeType, $fromDate, $timeSubType, $year) {
