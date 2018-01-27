@@ -1,4 +1,4 @@
-@extends('layout.main')
+ @extends('layout.main')
 @section('page-title')
 	
 @stop
@@ -11,6 +11,11 @@
 			<span style="float: right; cursor: pointer;" title="Kreiraj Excel dokumet"> 
 				<a  href="{{ action( 'FinancialReportController@downloadExcelDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >
 					<i class="fa fa-file-excel-o default-color"></i> 
+				</a>
+			</span>
+			<span style="float: right; cursor: pointer;" title="Kreiraj PDF dokumet">
+				<a  href="{{ action( 'FinancialReportController@downloadPDFDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >
+					<i class="fa fa-file-pdf-o default-color"></i>
 				</a>
 			</span>
 			@endif

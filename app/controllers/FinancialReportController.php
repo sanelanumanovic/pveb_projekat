@@ -1,7 +1,7 @@
 <?php
-
+use Barryvdh\DomPDF\Facade as PDF;
 class FinancialReportController extends BaseController {
- 
+
 	public function index() {
 
 		$data = [];
@@ -70,6 +70,21 @@ class FinancialReportController extends BaseController {
         }
 
 	}
+
+    public function downloadPDFDocument($fromDate, $toDate, $reportType) {
+        try
+        {
+            $modelData = $this->getModelDataByReportType($reportType,$fromDate,$toDate);
+        }
+        catch (Exception $e)
+        {
+            return View::make("financies.index")->with('data', $inputData)
+                ->with('message', $e->getMessage());
+        }
+
+        $pdf = PDF::loadView('financies.pdfReport',['revenues'=>$modelData,'from'=>$fromDate,'to'=>$toDate]);
+        return $pdf->download('pdfReport.pdf');
+    }
 
 	public function downloadExcelDocument($fromDate, $toDate, $reportType) {
 		switch ($reportType) {
@@ -143,6 +158,25 @@ class FinancialReportController extends BaseController {
 
 		return $online_deliveries->union($orders)->distinct()->orderBy('date')->get();
 	}
+
+	private function getModelDataByReportType($reportType,$fromDate,$toDate)
+    {
+        switch ($reportType) {
+            case '1':
+                $modelData = $this->revenues($fromDate, $toDate);
+                break;
+            case '2':
+                $modelData = $this->expenditures($fromDate, $toDate);
+                break;
+            case '3':
+                $modelData = $this->all($fromDate, $toDate);
+                break;
+            default:
+                throw new Exception('Neispravan unos!');
+        }
+
+        return $modelData;
+    }
 
 	private function all($fromDate, $toDate) {
 		return array_merge($this->revenues($fromDate, $toDate), $this->expenditures($fromDate, $toDate));

@@ -24,5 +24,6 @@ Route::group(array("before"=>"auth"), function () {
 
     Route::get("financies/download_excel/{fromDate}/{toDate}/{reportType}", "FinancialReportController@downloadExcelDocument");
 
+    Route::get("financies/download_pdf/{fromDate}/{toDate}/{reportType}", "FinancialReportController@downloadPDFDocument");
 });
 
