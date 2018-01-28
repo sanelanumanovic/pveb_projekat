@@ -14,10 +14,10 @@ class CreateOnlineDeliveriesTable extends Migration {
 		Schema::create('online_deliveries', function(Blueprint $table) {
 			$table->increments('id');
 
-			$table->unsignedInteger('order_id');
+			$table->integer('order_id');
 			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
 
-			$table->unsignedInteger('supplier_id');
+			$table->integer('supplier_id');
 			$table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
 
 			$table->longText('address');

@@ -13,10 +13,10 @@ class CreateOrderProductsTable extends Migration {
 	public function up() {
 		Schema::create('order_products', function(Blueprint $table) {
 
-			$table->unsignedInteger('order_id');
+			$table->integer('order_id');
 			$table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
 
-			$table->unsignedInteger('menu_id');
+			$table->integer('menu_id');
 			$table->foreign('menu_id')->references('id')->on('menu')->onDelete('cascade');
 
 			$table->tinyInteger('quantity');

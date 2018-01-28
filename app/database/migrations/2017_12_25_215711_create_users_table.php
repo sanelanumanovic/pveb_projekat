@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email', 64);
 			$table->string('account', 32);
 			$table->string('address', 64);
-			$table->unsignedInteger('supervisor_id')->nullable();
+			$table->integer('supervisor_id');
 			$table->foreign('supervisor_id')->references('id')->on('users');
 			$table->string('phone', 12);
 			$table->timestamp('start_date');

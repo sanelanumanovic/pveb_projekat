@@ -1,21 +1,22 @@
 <!doctype html>
 <html lang="en">
 	<head>
-	<title>Najmanji problem</title>
+		<title>Najmanji problem</title>
 
-	   
-	{{HTML::style('bootstrap/css/offcanvas.css')}}
-	{{HTML::style('css/common.css')}}
-    {{HTML::style('bootstrap/css/bootstrap.min.css')}}
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+		   
+		{{HTML::style('bootstrap/css/offcanvas.css')}}
+		{{HTML::style('css/common.css')}}
+	    {{HTML::style('bootstrap/css/bootstrap.min.css')}}
+	    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	</head>
 
 	<body>
 
 		<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 			<a class="navbar-brand bold" href="#">
-				<span> <i class="fa fa-cutlery default-color"></i> </span>
-				<span class="default-color">Najmanji problem</span>
+				<span> <i class="fa fa-cutlery default-green"></i> </span>
+				<span class="default-green">Najmanji problem</span>
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 	        	<span class="navbar-toggler-icon"></span>
@@ -39,7 +40,7 @@
 	        	<ul class="navbar-nav navbar-right">
 			         <li class="nav-item active" style="float: right;">
 	          			<a class="nav-link" href="/users/signout" title="Odjavi se">
-	          				<span> <i class="fa fa-sign-out default-color"></i> </span>
+	          				<span> <i class="fa fa-sign-out default-green"></i> </span>
           				</a>
 			        </li>
 	        	</ul>

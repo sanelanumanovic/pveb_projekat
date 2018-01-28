@@ -18,10 +18,10 @@ class CreateProcurementsTable extends Migration {
 			$table->date('termination_date')->nullable();
 			$table->string('termination_note', 100)->nullable();
 
-			$table->unsignedInteger('user_id');
+			$table->integer('user_id');
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-			$table->unsignedInteger('supplier_id');
+			$table->integer('supplier_id');
 			$table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
 		});
 	}

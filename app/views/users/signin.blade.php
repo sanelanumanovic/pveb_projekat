@@ -15,7 +15,7 @@
 
 	    	{{Form::open(array('url'=>'users/signin', 'class' => 'form-signin'))}}
 	        	<h2 class="form-signin-heading">
-	        		<span> <i class="fa fa-cutlery form-control-feedback default-color"></i> </span>
+	        		<span> <i class="fa fa-cutlery form-control-feedback default-green"></i> </span>
 	        		Najmanji problem
         		</h2>
 	        	<div class="form-group has-feedback has-feedback-left">
