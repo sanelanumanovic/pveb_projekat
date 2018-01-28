@@ -2,10 +2,11 @@
 <html>
 <head>
     <title> </title>
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
 </head>
 <body>
 <h2>Prihodi u periodu od {{$from}} do {{$to}}</h2>
-<table>
+<table class="report_tables">
     <thead>
     <tr>
         <th>Tip</th>

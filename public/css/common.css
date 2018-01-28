@@ -1,4 +1,4 @@
-.default-color {
+.default-green {
 	color: #28a745;
 }
 
@@ -12,4 +12,39 @@
 
 .float-right {
 	float: right;
+}
+
+.default-blue {
+	color: steelblue;
+}
+
+.default-orange {
+	color: #f57d21;
+}
+
+.default-red {
+	color: red;
+}
+
+.report_tables {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.report_tables td, .report_tables th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.report_tables tr:nth-child(even){background-color: #f2f2f2;}
+
+.report_tables tr:hover {background-color: #ddd;}
+
+.report_tables th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #4CAF50;
+	color: white;
 }
