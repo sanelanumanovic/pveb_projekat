@@ -28,7 +28,7 @@
 	          			<a class="nav-link" href="<?php echo Request::root(); ?>">Početna <span class="sr-only">(current)</span></a>
 			        </li>
 			        <li class="nav-item active">
-	          			<a class="nav-link" href="#">Jelovnik</a>
+	          			<a class="nav-link @if(Request::is('jelovnik/*')) active @endif" href="<?php echo Request::root(); ?>/jelovnik/">Jelovnik</a>
 			        </li>
 			        <li class="nav-item active">
 	          			<a class="nav-link" href="#">Rezervacije </a>
@@ -55,9 +55,9 @@
 			            <a href="#" class="list-group-item text-dark">Porudžbine</a>
 			            <a href="#" class="list-group-item text-dark">Rezervacije</a>
 			            <a href="#" class="list-group-item text-dark">Namirnice</a>
-			            <a href="#" class="list-group-item text-dark">Jelovnik</a>
+			            <a href="<?php echo Request::root(); ?>/jelovnik/" class="list-group-item text-dark{{ Request::is('jelovnik') || Request::is('jelovnik/*') ? ' active' : '' }}">Jelovnik</a>
 			            <a href="#" class="list-group-item text-dark">Inventar</a>
-			            <a href="<?php echo Request::root(); ?>/financies/" class="list-group-item active">Finansije</a>
+			            <a href="<?php echo Request::root(); ?>/financies/" class="list-group-item text-dark{{ Request::is('financies') ||  Request::is('financies/*') ? ' active' : '' }}">Finansije</a>
 			            <a href="#" class="list-group-item text-dark">Ljudski resursi</a>
 		            </div>
 		        </div>

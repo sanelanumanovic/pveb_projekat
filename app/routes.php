@@ -30,5 +30,9 @@ Route::group(array("before"=>"auth"), function () {
 
     Route::get("financies/download_pdf/{fromDate}/{toDate}/{reportType}", "FinancialReportController@downloadPDFDocument");
 
+
+    Route::get("jelovnik", "MenuController@index");
+    Route::post("jelovnik", "MenuController@showGraph");
+
 });
 
