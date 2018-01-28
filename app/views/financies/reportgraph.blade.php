@@ -38,8 +38,8 @@
 	<script src="https://fastcdn.org/D3.js/3.5.6/d3.min.js"></script>
 	<script>
 
-
-        let groups = {};
+		window.onload = () => {
+            let groups = {};
         let data = {{json_encode($modelData)}};
         data.forEach(d => {
             d.total = parseFloat(d.total);
@@ -55,30 +55,30 @@
         let graphElement = document.querySelector('.graph');
         let width = graphElement.width.baseVal.value,
             height = graphElement.height.baseVal.value / 2;
-		width = width - 2 * 10;
-		height = height - 2 * 25;
+        width = width - 2 * 10;
+        height = height - 2 * 25;
         let x = d3.scale.ordinal()
             .rangeRoundBands([0, width], .1).domain(graphData.map(d => d.date));
 
         let maxAbsTotal = d3.max(graphData, d => Math.abs(d.total));
         let y = d3.scale.linear()
-        .domain([maxAbsTotal, -maxAbsTotal])
-		.range([-height, height]);
+            .domain([maxAbsTotal, -maxAbsTotal])
+            .range([-height, height]);
         let chart = d3.select(".graph");
         let barWidth = width / graphData.length;
 
-		chart = chart.append("g").attr("transform", "translate(10, 25)");
+        chart = chart.append("g").attr("transform", "translate(10, 25)");
         let bar = chart.selectAll("g")
             .data(graphData)
             .enter().append("g")
             .attr("transform", (d, i) => "translate(" + x(d.date) + ",0)");
 
         let bars = bar.append("rect")
-			.attr("x", d => x(d.name)).attr("y", d => y(d.total) < 0 ? height - Math.abs(y(d.total)) : height)
+            .attr("x", d => x(d.name)).attr("y", d => y(d.total) < 0 ? height - Math.abs(y(d.total)) : height)
         .attr("height", d => Math.abs(y(d.total)))
         .attr("width", x.rangeBand())
-			.attr("onclick", d=> 'selectDate(this, "' + d.date + '")')
-            .append("svg:title").text(d => d.date +" = " + d.total);
+        .attr("onclick", d=> 'selectDate(this, "' + d.date + '")')
+        .append("svg:title").text(d => d.date +" = " + d.total);
 
 
         let xAxis = d3.svg.axis()
@@ -104,28 +104,30 @@
 
         chart.append("g")
             .attr("class", "y axis")
-			.attr("transform", "translate(" + width / 2 + ", " + height + ")")
+            .attr("transform", "translate(" + width / 2 + ", " + height + ")")
             .call(yAxis);
         d3.selectAll('y axis > text').attr("transform", "rotate(90, 0)");
 
-		let selectDate = (function() {
-		    let selectedElement = null;
+        document.selectDate = (function() {
+            let selectedElement = null;
             return function(el, date) {
                 let dataSelected = data.filter(d => d.date === date);
                 let rows = dataSelected.map(data => {
                     return '<tr><td>' + data.info + '</td><td>' + data.id + '</td><td>' + data.date + '</td><td align="right">' + data.total + '</td></tr>';
-                });
+            });
                 let tableDiv = document.querySelector("#selected-date-table");
                 tableDiv.querySelector("tbody").innerHTML = rows;
                 tableDiv.style.display = 'block';
                 if(!!selectedElement){
                     selectedElement.classList.remove('selected-column');
-				}
-				el.classList.add('selected-column');
+                }
+                el.classList.add('selected-column');
                 selectedElement = el;
 
             }
-        })()
+        })();
+		};
+
 
 	</script>
 
