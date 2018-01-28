@@ -58,7 +58,6 @@ class FinancialReportController extends BaseController {
 
             switch ($reportType) {
 	            case '1':
-	            	$fromDate = $this->calculateFromDate(1, $fromDate, null, null);
 	                $modelData = $this->revenues($fromDate, $toDate);
 	                $title = 'Prihodi ';
 	                $emptyResult = 'Ne postoje prihodi za traženi period.';
@@ -77,6 +76,12 @@ class FinancialReportController extends BaseController {
 	                return View::make("financies.index")->with('data', $inputData)
 	                    ->with('message', 'Neispravan unos!');
 	        }
+
+            if ($timeType == '4') {
+                $dates = array_map(create_function('$o', 'return $o->date;'), $modelData);
+                $fromDate = min($dates);
+                $toDate = max($dates);
+            }
 
 	        return View::make("financies.report")->with('modelData', $modelData)
 	            ->with('toDate', $toDate)
@@ -209,22 +214,37 @@ class FinancialReportController extends BaseController {
    	}
 
     private function expenditures($fromDate, $toDate) {
-        $inventories = DB::table('procurements')->where('completion_date', '>=', $fromDate)
-            ->where('completion_date', '<=', $toDate)
-            ->join('procurement_inventory_items', 'procurement_id', '=', 'id')
-            ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
-            ->groupBy('id');
+       if ($fromDate != null && $toDate != null) {
+            $inventories = DB::table('procurements')->where('completion_date', '>=', $fromDate)
+                ->where('completion_date', '<=', $toDate)
+                ->join('procurement_inventory_items', 'procurement_id', '=', 'id')
+                ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
+                ->groupBy('id');
+        } else {
+            $inventories = DB::table('procurements')->join('procurement_inventory_items', 'procurement_id', '=', 'id')
+                ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
+                ->groupBy('id');
+        }
 
-        $ingredients = DB::table('procurements')->where('completion_date', '>=', $fromDate)
-            ->where('completion_date', '<=', $toDate)
-            ->join('procurement_items', 'procurement_id', '=', 'id')
-            ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
-            ->groupBy('id');
+        if ($fromDate != null && $toDate != null) {
+            $ingredients = DB::table('procurements')->where('completion_date', '>=', $fromDate)
+                ->where('completion_date', '<=', $toDate)
+                ->join('procurement_items', 'procurement_id', '=', 'id')
+                ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
+                ->groupBy('id');
+        } else {
+            $ingredients = DB::table('procurements')->join('procurement_items', 'procurement_id', '=', 'id')
+                ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
+                ->groupBy('id');
+        }
 
-
-        $salaries = DB::table('salaries')->where('payment_date', '>=', $fromDate)
-            ->where('payment_date', '<=', $toDate)
-            ->select(DB::raw('id, amount as total, payment_date as date, "Plata" as info'));
+        if ($fromDate != null && $toDate != null) {
+            $salaries = DB::table('salaries')->where('payment_date', '>=', $fromDate)
+                ->where('payment_date', '<=', $toDate)
+                ->select(DB::raw('id, amount as total, payment_date as date, "Plata" as info'));
+        } else {
+            $salaries = DB::table('salaries')->select(DB::raw('id, amount as total, payment_date as date, "Plata" as info'));
+        }
 
         return $inventories->union($ingredients)->union($salaries)->orderBy('date')->get();
     }

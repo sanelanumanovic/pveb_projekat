@@ -11,7 +11,7 @@
 				 u periodu od {{date('d.m.Y.', strtotime($fromDate))}} do {{date('d.m.Y.', strtotime($toDate))}}
 			@endif
 			@if(count($modelData) > 0)
-			<span style="float: right; cursor: pointer;" title="Kreiraj Excel dokumet"> 
+			<span style="float: right; cursor: pointer; margin-left: 10px;" title="Kreiraj Excel dokumet"> 
 				<a  href="{{ action( 'FinancialReportController@downloadExcelDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >
 					<i class="fa fa-file-excel-o default-green"></i>
 				</a>

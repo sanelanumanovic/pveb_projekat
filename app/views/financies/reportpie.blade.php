@@ -16,12 +16,12 @@
 					<i class="fa fa-file-excel-o default-green"></i> 
 				</a>
 			</span>
-			<span style="float: right; cursor: pointer;" title="Kreiraj PDF dokumet">
+			<span style="float: right; cursor: pointer; margin: 0px 10px;" title="Kreiraj PDF dokumet">
 				<a  href="{{ action( 'FinancialReportController@downloadPDFDocument', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType) ) }}" >
 					<i class="fa fa-file-pdf-o default-red"></i>
 				</a>
 			</span>
-			<span style="float: right; cursor: pointer; margin: 0px 10px;" title="Prikaži graph">
+			<span style="float: right; cursor: pointer;" title="Prikaži graph">
 				<a  href="{{ action( 'FinancialReportController@plotGraph', array('fromDate' => $fromDate, 'toDate' => $toDate, 'type' => $reportType, 'title' => $title) ) }}" >
 					<i class="fa fa-bar-chart default-blue"></i>
 				</a>
@@ -39,7 +39,6 @@
 	</div>
 
 	{{HTML::script('mdbootstrap/js/mdb.min.js')}}
-	{{HTML::style('mdbootstrap/css/mdb.min.css')}}
 
 	<script>
 	    
