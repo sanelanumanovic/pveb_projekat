@@ -20,7 +20,9 @@ Route::group(array("before"=>"auth"), function () {
 
 	Route::resource('financies', 'FinancialReportController');
 
-    Route::post('report_request','FinancialReportController@generateReport');
+	Route::resource('procurements', 'ProcurementController');
+
+    Route::post('financies/report_request','FinancialReportController@generateReport');
 
     Route::get("financies/download_excel/{fromDate}/{toDate}/{reportType}", "FinancialReportController@downloadExcelDocument");
 
@@ -33,6 +35,13 @@ Route::group(array("before"=>"auth"), function () {
 
     Route::get("jelovnik", "MenuController@index");
     Route::post("jelovnik", "MenuController@showGraph");
+
+    Route::post("procurements/by_supplier", "ProcurementController@procurementsBySupplierAndDate");
+
+    Route::get("procurements/download_pdf/{fromDate}/{toDate}/{supplierId}", "ProcurementController@downloadPDFDocument");
+    
+    Route::get("procurements/download_excel/{fromDate}/{toDate}/{supplierId}", "ProcurementController@downloadExcelDocument");
+
 
 });
 
