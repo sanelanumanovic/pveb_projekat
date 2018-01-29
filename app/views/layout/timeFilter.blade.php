@@ -3,7 +3,7 @@
     {{Form::label('Interval')}}
 </div>
 
-<div class="col-12 col-md-9">
+<div class="col-6 col-md-9">
     <div class="timeType-1">
         {{ Form::input('date', 'fromDate', date('Y-m-d', strtotime('-1 day'))) }}
         {{Form::label('-')}}
@@ -37,7 +37,7 @@
     {{Form::label('Godina')}}
 </div>
 
-<div class="col-12 col-md-9">
+<div class="col-6 col-md-9">
     <div class="timeType-3">
         {{ Form::selectYear('year', 2018, 1990) }}
     </div>

@@ -31,20 +31,20 @@ class FinancialReportController extends BaseController {
 
             switch ($timeType) {
             	case '1':
-            		$fromDate = $this->calculateFromDate(1, $fromDate, null, null);
-            		$toDate = $this->calculateToDate(1, $toDate, null, null);
+            		$fromDate = DateUtil::calculateFromDate(1, $fromDate, null, null);
+            		$toDate = DateUtil::calculateToDate(1, $toDate, null, null);
             		break;
         		case '2':
-        			$fromDate = $this->calculateFromDate(2, $fromDate, $timeSubType, null);
-        			$toDate = $this->calculateToDate(2, $toDate, $timeSubType, null);
+        			$fromDate = DateUtil::calculateFromDate(2, $fromDate, $timeSubType, null);
+        			$toDate = DateUtil::calculateToDate(2, $toDate, $timeSubType, null);
         			break;
     			case '3':
-    				$fromDate = $this->calculateFromDate(3, $fromDate, null, $year);
-    				$toDate = $this->calculateToDate(3, $toDate, null, $year);
+    				$fromDate = DateUtil::calculateFromDate(3, $fromDate, null, $year);
+    				$toDate = DateUtil::calculateToDate(3, $toDate, null, $year);
     				break;
 				case '4':
-					$fromDate = $this->calculateFromDate(4, $fromDate, null, null);
-					$toDate = $this->calculateToDate(4, $toDate, null, null);
+					$fromDate = DateUtil::calculateFromDate(4, $fromDate, null, null);
+					$toDate = DateUtil::calculateToDate(4, $toDate, null, null);
 					break;
 				default:
 					return View::make("financies.index")->with('data', $inputData)
@@ -168,50 +168,6 @@ class FinancialReportController extends BaseController {
             ->with('fromDate', $fromDate)
             ->with('title', $title);
     }
-
-   	private function calculateFromDate($timeType, $fromDate, $timeSubType, $year) {
-   		switch ($timeType) {
-            case '1':
-                return $fromDate;
-            case '2':
-            	switch ($timeSubType) {
-            		case '1':
-            			$time = strtotime("-1 months", time());
-            			return date("Y-m-d", $time);
-        			case '2':
-        				$time = strtotime("-3 months", time());
-            			return date("Y-m-d", $time);
-        			case '3':
-        				$time = strtotime("-6 months", time());
-            			return date("Y-m-d", $time);
-        			case '4':
-        				$time = strtotime("-1 year", time());
-            			return date("Y-m-d", $time);
-            		default:
-            			var_dump('Greska!');
-            			break;
-            	}
-            case '3':
-            	$time = strtotime('01/01/'.$year);
-				return date('Y-m-d',$time);
-            case '4':
-            	return null;
-        }
-   	}
-
-   	private function calculateToDate($timeType, $toDate, $timeSubType, $year) {
-   		switch ($timeType) {
-            case '1':
-                return $toDate;
-            case '2':
-               return  date("Y-m-d", strtotime('+0 day'));
-            case '3':
-            	$time = strtotime('12/31/'.$year);
-				return date('Y-m-d',$time);
-            case '4':
-            	return null;
-        }
-   	}
 
     private function expenditures($fromDate, $toDate) {
        if ($fromDate != null && $toDate != null) {

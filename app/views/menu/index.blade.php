@@ -6,12 +6,20 @@
 @section('content')
 
     <div class="container">
+        <div class="row">
 
-        {{ Form:: open(array('action' => 'MenuController@showGraph')) }}
-        @include('layout.timeFilter')
+        <div>
 
-        <div class="col-6 col-md-9 float-right text-danger">
+            {{ Form:: open(array('action' => 'MenuController@showGraph')) }}
+        </div>
+
+
+                @include('layout.timeFilter')
+
+            <div class="col-6 col-md-9 float-right text-danger">
+
             {{$message or ''}}
+            </div>
         </div>
 
         <div class="col-6 col-md-3">
@@ -26,5 +34,9 @@
 
         {{ Form:: close() }}
     </div>
+    </div>
+
+
+    {{HTML::script('js/financies.js')}}
 
 @stop
