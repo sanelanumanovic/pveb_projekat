@@ -7,11 +7,19 @@
 }
 
 .jumbotron {
-	min-height: 344px;
+	min-height: 393px;
 }
 
 .float-right {
 	float: right;
+}
+
+.margin-bottom-10 {
+	margin-bottom: 10px;
+}
+
+.select-field {
+	width: 173px;
 }
 
 .default-blue {

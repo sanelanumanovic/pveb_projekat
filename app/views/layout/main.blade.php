@@ -59,6 +59,7 @@
 			            <a href="#" class="list-group-item text-dark">Inventar</a>
 			            <a href="<?php echo Request::root(); ?>/financies/" class="list-group-item text-dark{{ Request::is('financies') ||  Request::is('financies/*') ? ' active' : '' }}">Finansije</a>
 			            <a href="#" class="list-group-item text-dark">Ljudski resursi</a>
+			            <a href="<?php echo Request::root(); ?>/procurements/" class="list-group-item text-dark{{ Request::is('procurements') || Request::is('procurements/*') ? ' active' : '' }}">Nabavke</a>
 		            </div>
 		        </div>
 
