@@ -26,20 +26,20 @@ class ProcurementController extends BaseController {
 
         switch ($timeType) {
         	case '1':
-        		$fromDate = $this->calculateFromDate(1, $fromDate, null, null);
-        		$toDate = $this->calculateToDate(1, $toDate, null, null);
+        		$fromDate = DateUtil::calculateFromDate(1, $fromDate, null, null);
+        		$toDate = DateUtil::calculateToDate(1, $toDate, null, null);
         		break;
     		case '2':
-    			$fromDate = $this->calculateFromDate(2, $fromDate, $timeSubType, null);
-    			$toDate = $this->calculateToDate(2, $toDate, $timeSubType, null);
+    			$fromDate = DateUtil::calculateFromDate(2, $fromDate, $timeSubType, null);
+    			$toDate = DateUtil::calculateToDate(2, $toDate, $timeSubType, null);
     			break;
 			case '3':
-				$fromDate = $this->calculateFromDate(3, $fromDate, null, $year);
-				$toDate = $this->calculateToDate(3, $toDate, null, $year);
+				$fromDate = DateUtil::calculateFromDate(3, $fromDate, null, $year);
+				$toDate = DateUtil::calculateToDate(3, $toDate, null, $year);
 				break;
 			case '4':
-				$fromDate = $this->calculateFromDate(4, $fromDate, null, null);
-				$toDate = $this->calculateToDate(4, $toDate, null, null);
+				$fromDate = DateUtil::calculateFromDate(4, $fromDate, null, null);
+				$toDate = DateUtil::calculateToDate(4, $toDate, null, null);
 				break;
 			default:
 				return View::make("financies.index")->with('data', $inputData)
@@ -51,7 +51,7 @@ class ProcurementController extends BaseController {
                 ->with('message', 'Neispravan vremenski interval!');
         }
 
-        $modelData = $this->procurementsBySupIdAndDate($fromDate, $toDate, $supplierId);
+        $modelData = ProcurementHelper::getAllProcurementsBySupIdAndInterval($supplierId, $fromDate, $toDate);
 
         if ($timeType == '4') {
             $dates = array_map(create_function('$o', 'return $o->date;'), $modelData);
@@ -71,40 +71,11 @@ class ProcurementController extends BaseController {
 		
 	}
 
-	private function procurementsBySupIdAndDate($fromDate, $toDate, $supplierId) {
-		if ($fromDate != null && $toDate != null) {
-            $inventories = DB::table('procurements')->where('supplier_id', $supplierId)
-            	->where('completion_date', '>=', $fromDate)
-                ->where('completion_date', '<=', $toDate)
-                ->join('procurement_inventory_items', 'procurement_id', '=', 'id')
-                ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
-                ->groupBy('id');
-        } else {
-            $inventories = DB::table('procurements')->join('procurement_inventory_items', 'procurement_id', '=', 'id')->where('supplier_id', $supplierId)
-                ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
-                ->groupBy('id');
-        }
-
-        if ($fromDate != null && $toDate != null) {
-            $ingredients = DB::table('procurements')->where('supplier_id', $supplierId)
-            	->where('completion_date', '>=', $fromDate)
-                ->where('completion_date', '<=', $toDate)
-                ->join('procurement_items', 'procurement_id', '=', 'id')
-                ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
-                ->groupBy('id');
-        } else {
-            $ingredients = DB::table('procurements')->join('procurement_items', 'procurement_id', '=', 'id')->where('supplier_id', $supplierId)
-                ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
-                ->groupBy('id');
-        }
-
-        return $inventories->union($ingredients)->orderBy('date')->get();
-    }
 
     public function downloadExcelDocument($fromDate, $toDate, $supplierId) {
 
         try {
-            $modelData = $this->procurementsBySupIdAndDate($fromDate, $toDate, $supplierId);
+            $modelData = ProcurementHelper::getAllProcurementsBySupIdAndInterval($supplierId, $fromDate, $toDate);
         } catch (Exception $e) {
             return View::make("procurements.index")->with('message', $e->getMessage());
         }
@@ -127,7 +98,7 @@ class ProcurementController extends BaseController {
 
     public function downloadPDFDocument($fromDate, $toDate, $supplierId) {
         try {
-            $modelData = $this->procurementsBySupIdAndDate($fromDate, $toDate, $supplierId);
+            $modelData = ProcurementHelper::getAllProcurementsBySupIdAndInterval($supplierId, $fromDate, $toDate);
         } catch (Exception $e) {
             return View::make("financies.index")->with('message', $e->getMessage());
         }
@@ -141,51 +112,5 @@ class ProcurementController extends BaseController {
 
 	public function show() {
 	}
-
-	private function calculateFromDate($timeType, $fromDate, $timeSubType, $year) {
-   		switch ($timeType) {
-            case '1':
-                return $fromDate;
-            case '2':
-            	switch ($timeSubType) {
-            		case '1':
-            			$time = strtotime("-1 months", time());
-            			return date("Y-m-d", $time);
-        			case '2':
-        				$time = strtotime("-3 months", time());
-            			return date("Y-m-d", $time);
-        			case '3':
-        				$time = strtotime("-6 months", time());
-            			return date("Y-m-d", $time);
-        			case '4':
-        				$time = strtotime("-1 year", time());
-            			return date("Y-m-d", $time);
-            		default:
-            			var_dump('Greska!');
-            			break;
-            	}
-            case '3':
-            	$time = strtotime('01/01/'.$year);
-				return date('Y-m-d',$time);
-            case '4':
-            	return null;
-        }
-   	}
-
-   	private function calculateToDate($timeType, $toDate, $timeSubType, $year) {
-   		switch ($timeType) {
-            case '1':
-                return $toDate;
-            case '2':
-               return  date("Y-m-d", strtotime('+0 day'));
-            case '3':
-            	$time = strtotime('12/31/'.$year);
-				return date('Y-m-d',$time);
-            case '4':
-            	return null;
-        }
-   	}
-
-
 
 }

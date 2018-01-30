@@ -120,14 +120,10 @@ class FinancialReportController extends BaseController {
 
     public function downloadExcelDocument($fromDate, $toDate, $reportType) {
 
-        try
-        {
+        try {
             $modelData = $this->getModelDataByReportType($reportType,$fromDate,$toDate);
-        }
-        catch (Exception $e)
-        {
-            return View::make("financies.index")->with('data', $inputData)
-                ->with('message', $e->getMessage());
+        } catch (Exception $e) {
+            return View::make("financies.index")->with('message', $e->getMessage());
         }
 
         Excel::load('finansijski_izvestaj.xlsx', function ($excel) use ($modelData) {
@@ -156,8 +152,7 @@ class FinancialReportController extends BaseController {
                 $modelData = $this->all($fromDate, $toDate);
                 break;
             default:
-                return View::make("financies.index")->with('data', $reportType)
-                    ->with('message', 'Neispravan unos!');
+                return View::make("financies.index")->with('message', 'Neispravan unos!');
         }
 
 
@@ -170,77 +165,14 @@ class FinancialReportController extends BaseController {
     }
 
     private function expenditures($fromDate, $toDate) {
-       if ($fromDate != null && $toDate != null) {
-            $inventories = DB::table('procurements')->where('completion_date', '>=', $fromDate)
-                ->where('completion_date', '<=', $toDate)
-                ->join('procurement_inventory_items', 'procurement_id', '=', 'id')
-                ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
-                ->groupBy('id');
-        } else {
-            $inventories = DB::table('procurements')->join('procurement_inventory_items', 'procurement_id', '=', 'id')
-                ->select(DB::raw('id, sum(procurement_inventory_items.price * procurement_inventory_items.quantity) as total, completion_date as date, "Nabavka inventara" as info'))
-                ->groupBy('id');
-        }
-
-        if ($fromDate != null && $toDate != null) {
-            $ingredients = DB::table('procurements')->where('completion_date', '>=', $fromDate)
-                ->where('completion_date', '<=', $toDate)
-                ->join('procurement_items', 'procurement_id', '=', 'id')
-                ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
-                ->groupBy('id');
-        } else {
-            $ingredients = DB::table('procurements')->join('procurement_items', 'procurement_id', '=', 'id')
-                ->select(DB::raw('id, sum(procurement_items.price * procurement_items.quantity) as total, completion_date as date, "Nabavka namirnica" as info'))
-                ->groupBy('id');
-        }
-
-        if ($fromDate != null && $toDate != null) {
-            $salaries = DB::table('salaries')->where('payment_date', '>=', $fromDate)
-                ->where('payment_date', '<=', $toDate)
-                ->select(DB::raw('id, amount as total, payment_date as date, "Plata" as info'));
-        } else {
-            $salaries = DB::table('salaries')->select(DB::raw('id, amount as total, payment_date as date, "Plata" as info'));
-        }
-
-        return $inventories->union($ingredients)->union($salaries)->orderBy('date')->get();
+        $procurements = ProcurementHelper::getAllProcurementsByInterval($fromDate, $toDate);
+        $salaries = SalaryHelper::getAllSalariesByInterval($fromDate, $toDate);
+       
+        return $procurements->union($salaries)->orderBy('date')->get();
     }
 
     private function revenues($fromDate, $toDate) {
-    	if ($fromDate != null && $toDate != null) {
-	        $online_deliveries = DB::table('online_deliveries')->join('orders', 'online_deliveries.order_id', '=', 'orders.id')
-	            ->where('completion_date', '>=', $fromDate)
-	            ->where('completion_date', '<=', $toDate)
-	            ->join('order_products', 'order_products.order_id', '=', 'orders.id')
-	            ->join('menu', 'menu.id', '=', 'order_products.menu_id')
-	            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Online porudžbina" as info'))
-	            ->groupBy('orders.id');
-        } else {
-        	$online_deliveries = DB::table('online_deliveries')->join('orders', 'online_deliveries.order_id', '=', 'orders.id')
-	            ->join('order_products', 'order_products.order_id', '=', 'orders.id')
-	            ->join('menu', 'menu.id', '=', 'order_products.menu_id')
-	            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Online porudžbina" as info'))
-	            ->groupBy('orders.id');
-	        }
-
-        $idForOnlineOrder = array_map(create_function('$o', 'return $o->id;'), $online_deliveries->get());
-
-        if ($fromDate != null && $toDate != null) {
-	        $orders = DB::table('orders')->whereNotIn('orders.id', $idForOnlineOrder)
-	            ->where('completion_date', '>=', $fromDate)
-	            ->where('completion_date', '<=', $toDate)
-	            ->join('order_products', 'order_id', '=', 'id')
-	            ->join('menu', 'menu.id', '=', 'menu_id')
-	            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Porudžbina" as info'))
-	            ->groupBy('orders.id');
-        } else {
-        	$orders = DB::table('orders')->whereNotIn('orders.id', $idForOnlineOrder)
-	            ->join('order_products', 'order_id', '=', 'id')
-	            ->join('menu', 'menu.id', '=', 'menu_id')
-	            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Porudžbina" as info'))
-	            ->groupBy('orders.id');
-        }
-
-        return $online_deliveries->union($orders)->distinct()->orderBy('date')->get();
+        return OrderHelper::getAllOrdersByInterval($fromDate, $toDate);
     }
 
 	private function getModelDataByReportType($reportType,$fromDate,$toDate)
