@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration {
 			$table->timestamp('start_date');
 			$table->boolean('admin')->default(0);
 			$table->string('personal_number', 13);
+			$table->rememberToken();
 			$table->timestamps();
 		});
 	}
