@@ -21,15 +21,14 @@
             {{$message or ''}}
             </div>
         </div>
+        <div class="row">
 
-        <div class="col-6 col-md-3">
-        </div>
+            <div class="col-6 col-md-8">
+            </div>
 
-        <div class="col-6 col-md-9">
-        </div>
-
-        <div class="col-6 col-md-3">
-            <button class="btn btn-success btn-block" type="submit">Pregledaj poručena jela</button>
+            <div class="col-6 col-md-4">
+                <button class="btn btn-success btn-block" type="submit">Pregledaj poručena jela</button>
+            </div>
         </div>
 
         {{ Form:: close() }}
