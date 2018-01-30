@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="./css/common.css">
 </head>
 <body>
-<h2>Prihodi u periodu od {{$from}} do {{$to}}</h2>
+<h2>{{$title}} u periodu od {{date('d.m.Y.', strtotime($from))}} do {{date('d.m.Y.', strtotime($to))}}</h2>
 <table class="report_tables">
     <thead>
     <tr>
@@ -21,7 +21,7 @@
                 <td>{{$revenue->info}}</td>
                 <td>{{$revenue->id}}</td>
                 <td>{{date('d.m.Y.', strtotime($revenue->date))}}</td>
-                <td>{{$revenue->total}}</td>
+                <td align="right">{{number_format($revenue->total, 2)}}</td>
             </tr>
             @endforeach
     </tbody>

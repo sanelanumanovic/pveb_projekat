@@ -56,26 +56,9 @@ class FinancialReportController extends BaseController {
                     ->with('message', 'Neispravan vremenski interval!');
             }
 
-            switch ($reportType) {
-	            case '1':
-	                $modelData = $this->revenues($fromDate, $toDate);
-	                $title = 'Prihodi ';
-	                $emptyResult = 'Ne postoje prihodi za traženi period.';
-	                break;
-	            case '2':
-	                $modelData = $this->expenditures($fromDate, $toDate);
-	                $title = 'Rashodi ';
-	                $emptyResult = 'Ne postoje rashodi za traženi period.';
-	                break;
-	            case '3':
-	                $modelData = $this->all($fromDate, $toDate);
-	                $title = 'Prihodi i rashodi ';
-	                $emptyResult = 'Ne postoje prihodi i rashodi za traženi period.';
-	                break;
-	            default:
-	                return View::make("financies.index")->with('data', $inputData)
-	                    ->with('message', 'Neispravan unos!');
-	        }
+            $title = GeneralHelper::getTitleByReportType($reportType);
+            $emptyResult = GeneralHelper::getMessageForEmptyResult($reportType);
+            $modelData = $this->getModelDataByReportType($reportType, $fromDate, $toDate);
 
             if ($timeType == '4') {
                 $dates = array_map(create_function('$o', 'return $o->date;'), $modelData);
@@ -141,20 +124,8 @@ class FinancialReportController extends BaseController {
     }
 
     public function drawPieChart($fromDate, $toDate, $reportType, $title)  {
-	    switch ($reportType) {
-            case '1':
-                $modelData = $this->revenues($fromDate, $toDate);
-                break;
-            case '2':
-                $modelData = $this->expenditures($fromDate, $toDate);
-                break;
-            case '3':
-                $modelData = $this->all($fromDate, $toDate);
-                break;
-            default:
-                return View::make("financies.index")->with('message', 'Neispravan unos!');
-        }
-
+	   
+        $modelData = $this->getModelDataByReportType($reportType, $fromDate, $toDate);
 
         return View::make("financies.reportpie")
             ->with('modelData', $modelData)
@@ -198,6 +169,7 @@ class FinancialReportController extends BaseController {
         try
         {
             $modelData = $this->getModelDataByReportType($reportType,$fromDate,$toDate);
+            $title = GeneralHelper::getTitleByReportType($reportType);
         }
         catch (Exception $e)
         {
@@ -205,7 +177,7 @@ class FinancialReportController extends BaseController {
                 ->with('message', $e->getMessage());
         }
 
-        $pdf = PDF::loadView('financies.pdfReport',['revenues'=>$modelData,'from'=>$fromDate,'to'=>$toDate]);
+        $pdf = PDF::loadView('financies.pdfReport',['revenues'=>$modelData,'from'=>$fromDate,'to'=>$toDate, 'title' => $title]);
         return $pdf->download('pdfReport.pdf');
     }
 
