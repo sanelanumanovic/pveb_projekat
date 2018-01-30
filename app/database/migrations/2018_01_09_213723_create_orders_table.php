@@ -22,6 +22,8 @@ class CreateOrdersTable extends Migration {
 			$table->integer('user_id');
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+			$table->decimal('total', 10, 2);
+
 			$table->integer('table_id')->nullable();
 		});
 	}

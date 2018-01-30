@@ -13,17 +13,12 @@ class OrderHelper {
 	private static function getAllOnlineOrdersByInterval($fromDate, $toDate) {
 		if ($fromDate != null && $toDate != null) {
 	        return  DB::table('online_deliveries')->join('orders', 'online_deliveries.order_id', '=', 'orders.id')
-			            ->where('completion_date', '>=', $fromDate)
-			            ->where('completion_date', '<=', $toDate)
-			            ->join('order_products', 'order_products.order_id', '=', 'orders.id')
-			            ->join('menu', 'menu.id', '=', 'order_products.menu_id')
-			            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Online porudžbina" as info'))
+			            ->whereBetween('completion_date', array($fromDate, $toDate))
+			            ->select(DB::raw('orders.id as id, orders.total as total, completion_date as date, "Online porudžbina" as info'))
 			            ->groupBy('orders.id');
         } else {
         	return DB::table('online_deliveries')->join('orders', 'online_deliveries.order_id', '=', 'orders.id')
-			            ->join('order_products', 'order_products.order_id', '=', 'orders.id')
-			            ->join('menu', 'menu.id', '=', 'order_products.menu_id')
-			            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Online porudžbina" as info'))
+			            ->select(DB::raw('orders.id as id, orders.total as total, completion_date as date, "Online porudžbina" as info'))
 			            ->groupBy('orders.id');
         }
 	}
@@ -35,11 +30,8 @@ class OrderHelper {
 			                      ->from('online_deliveries')
 			                      ->whereRaw('orders.id = online_deliveries.order_id');
 			            })
-			            ->where('completion_date', '>=', $fromDate)
-			            ->where('completion_date', '<=', $toDate)
-			            ->join('order_products', 'order_id', '=', 'id')
-			            ->join('menu', 'menu.id', '=', 'menu_id')
-			            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Porudžbina" as info'))
+			            ->whereBetween('completion_date', array($fromDate, $toDate))
+			            ->select(DB::raw('orders.id as id, orders.total as total, completion_date as date, "Porudžbina" as info'))
 			            ->groupBy('orders.id');
         } else {
         	return DB::table('orders')->whereNotExists(function($query) {
@@ -47,9 +39,7 @@ class OrderHelper {
 			                      ->from('online_deliveries')
 			                      ->whereRaw('orders.id = online_deliveries.order_id');
 			            })
-			            ->join('order_products', 'order_id', '=', 'id')
-			            ->join('menu', 'menu.id', '=', 'menu_id')
-			            ->select(DB::raw('orders.id as id, sum(menu.price * order_products.quantity) as total, completion_date as date, "Porudžbina" as info'))
+			            ->select(DB::raw('orders.id as id, orders.total as total, completion_date as date, "Porudžbina" as info'))
 			            ->groupBy('orders.id');
         }
 	}

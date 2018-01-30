@@ -21,6 +21,8 @@ class CreateOrderProductsTable extends Migration {
 
 			$table->tinyInteger('quantity');
 
+			$table->decimal('price', 10, 2);
+
 			$table->primary(['order_id', 'menu_id']);
 		});
 	}
